@@ -1,0 +1,167 @@
+/**
+ * Spotify service to intialise Spotify API.
+ */
+
+const SpotifyWebApi = require('spotify-web-api-node');
+const admin = require('firebase-admin');
+
+class SpotifyProvider {
+    /**
+     * Creates a Spotify Provider. Always call `.checkToken(token)` after
+     * creating the provider to ensure a fresh token is being used.
+     * @param {*} userId
+     */
+    constructor(userId) {
+        this.spotify = new SpotifyWebApi({
+            clientId: process.env.SPOTIFY_CLIENT_ID,
+            clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        });
+        this.userId = userId;
+    }
+
+    /**
+     * Checks if Spotify token is valid and refreshes if it isn't.
+     * @param {string} token
+     */
+    async checkToken(token) {
+        console.log('check token', token);
+        this.spotify.setAccessToken(token);
+        const validToken = await this.spotify
+            .getMe()
+            .then(() => true)
+            .catch(() => false);
+        if (!validToken) {
+            await this.refreshSpotifyToken(this.userId);
+        }
+        return true;
+    }
+
+    /**
+     * Pulls user data and refreshes Spotify token.
+     * @param {string} userId
+     */
+    async refreshSpotifyToken(userId) {
+        console.log('Refreshing access token...');
+        let accessToken;
+        let refreshToken;
+        await admin
+            .firestore()
+            .collection('users')
+            .doc(userId)
+            .get()
+            .then((doc) => {
+                accessToken = doc.data().accessToken;
+                refreshToken = doc.data().refreshToken;
+                return;
+            })
+            .catch((err) => {
+                console.log(err);
+                throw new Error(
+                    'Error with retrieving accessToken for user from database',
+                );
+            });
+        this.spotify.setAccessToken(accessToken);
+        this.spotify.setRefreshToken(refreshToken);
+        const token = await this.spotify
+            .refreshAccessToken()
+            .then(async (res) => {
+                return admin
+                    .firestore()
+                    .collection('users')
+                    .doc(userId)
+                    .set(
+                        {
+                            accessToken: res.body.access_token,
+                            refreshToken: this.spotify.getRefreshToken(),
+                            accessTokenRefresh: new Date(),
+                        },
+                        { merge: true },
+                    )
+                    .then((_) => res.body.access_token);
+            })
+            .catch((err) => console.error(err));
+        return this.spotify.setAccessToken(token);
+    }
+
+    /**
+     * Given a Spotify artist URI, returns the name and image of
+     * the artist as an object.
+     * @param {string} id
+     */
+    async getArtist(id) {
+        return this.spotify
+            .getArtist(id)
+            .then((artist) => {
+                const data = artist.body;
+                return {
+                    name: data.name,
+                    image: data.images[0].url,
+                };
+            })
+            .catch((err) => console.error('Error with getting artist', err));
+    }
+
+    /**
+     * Given a Spotify track URI, returns the name, artists and album
+     * image as an object.
+     * @param {string} id
+     */
+    async getTrack(id) {
+        return this.spotify
+            .getTrack(id)
+            .then((track) => {
+                const data = track.body;
+                return {
+                    name: data.name,
+                    artist: data.artists.map((a) => a.name).join(', '),
+                    image: data.album.images[0].url,
+                };
+            })
+            .catch((err) => console.error('Error with getting track', err));
+    }
+
+    /**
+     *
+     * @param {"short_term"|"medium_term"|"long_term"} time_range
+     * @param {number} limit
+     */
+    async getTopSongs(time_range = 'short_term', limit = 10) {
+        console.log('Getting top songs.', time_range);
+        return this.spotify
+            .getMyTopTracks({ time_range, limit })
+            .then((data) => {
+                console.log('RESPONSE', data.body.items[0]);
+                return data.body.items.map((track) => ({
+                    name: track.name,
+                    artist: track.artists.map((a) => a.name).join(', '),
+                    image: track.album.images[0].url,
+                    url: track.external_urls.spotify,
+                }));
+            })
+            .catch((err) =>
+                console.error('Error with getting top tracks', err),
+            );
+    }
+
+    /**
+     *
+     * @param {"short_term"|"medium_term"|"long_term"} time_range
+     * @param {number} limit
+     */
+    async getTopArtists(time_range = 'short_term', limit = 10) {
+        return this.spotify
+            .getMyTopArtists({ time_range, limit })
+            .then((data) => {
+                return data.body.items.map((artist) => ({
+                    name: artist.name,
+                    image: artist.images[0].url,
+                    url: artist.external_urls.spotify,
+                }));
+            })
+            .catch((err) =>
+                console.error('Error with getting top artists', err),
+            );
+    }
+}
+
+module.exports = SpotifyProvider;
