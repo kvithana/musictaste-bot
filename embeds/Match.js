@@ -59,7 +59,7 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
     embed = embed
         .addField(
             'See Match',
-            `https://musictaste.space/match/${matchData.matchId}`,
+            `[Click Here](https://musictaste.space/match/${matchData.matchId})`,
         )
         .addField('Match Command', `$musictaste match ${displayName}`)
         .setTimestamp(new Date(matchData.date))

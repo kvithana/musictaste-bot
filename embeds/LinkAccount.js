@@ -11,7 +11,7 @@ const LinkAccount = () => {
             'https://musictaste.space',
         )
         .setDescription(
-            'Click the link above to link your musictaste.space account with your Discord profile.',
+            'Link your musictaste.space account with your Discord profile.',
         );
     return embed;
 };

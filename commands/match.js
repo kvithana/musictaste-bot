@@ -53,7 +53,7 @@ const command = (worker, api) => {
             displayName: message.member.displayName,
         });
         return message.channel.send(
-            `Hey, <@${taggedDiscordId}>! <@${message.author.id}> wants to compare music tastes. To approve, type \`!mt accept @${message.member.displayName}\`.`,
+            `Hey, <@${taggedDiscordId}>! <@${message.author.id}> wants to compare music tastes. To approve, type \`!mt accept @${message.member.displayName}\`. You will be sharing your Spotify profile with people you match with.`,
         );
     };
     return match;

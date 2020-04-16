@@ -90,7 +90,6 @@ class musictasteAPI {
                 const matchedTracks = matchData.matchedTracksLongTerm
                     .concat(matchData.matchedTracksMediumTerm)
                     .concat(matchData.matchedTracksShortTerm);
-                console.log(matchData);
                 const minifiedData = {
                     matchId,
                     score: matchData.score,
@@ -151,6 +150,19 @@ class musictasteAPI {
             .firestore()
             .collection('matches')
             .doc(matchId)
+            .get();
+        if (matchDoc.empty) {
+            return undefined;
+        } else {
+            return matchDoc.data();
+        }
+    }
+
+    async getSpotifyData(uid = this.mtUID) {
+        const matchDoc = await admin
+            .firestore()
+            .collection('spotify')
+            .doc(uid)
             .get();
         if (matchDoc.empty) {
             return undefined;

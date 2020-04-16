@@ -16,7 +16,20 @@ const command = (worker, api) => {
      */
     const fn = async (message, args) => {
         const userData = await api.getUser();
-        message.channel.send(Me(userData, message.member.displayName));
+        const spotifyData = await api.getSpotifyData();
+        const genres = Object.entries(spotifyData.topGenres).sort(
+            (a, b) => a[1].index - b[1].index,
+        );
+        await api.armSpotify();
+        const additional = {
+            trackST: await api.sptfy.getTopSongs('short_term', 1),
+            trackMT: await api.sptfy.getTopSongs('medium_term', 1),
+            trackLT: await api.sptfy.getTopSongs('long_term', 1),
+            artists: await api.sptfy.getTopArtists('short_term', 5),
+        };
+        message.channel.send(
+            Me(userData, message.member.displayName, additional, genres),
+        );
     };
     return fn;
 };

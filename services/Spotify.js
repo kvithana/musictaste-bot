@@ -24,7 +24,6 @@ class SpotifyProvider {
      * @param {string} token
      */
     async checkToken(token) {
-        console.log('check token', token);
         this.spotify.setAccessToken(token);
         const validToken = await this.spotify
             .getMe()
@@ -130,7 +129,6 @@ class SpotifyProvider {
         return this.spotify
             .getMyTopTracks({ time_range, limit })
             .then((data) => {
-                console.log('RESPONSE', data.body.items[0]);
                 return data.body.items.map((track) => ({
                     name: track.name,
                     artist: track.artists.map((a) => a.name).join(', '),
