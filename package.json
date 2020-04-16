@@ -1,5 +1,5 @@
 {
-    "name": "musictaste.space-discord-bot",
+    "name": "musictaste-bot",
     "version": "1.0.0",
     "description": "Discord bot for musictaste.space functionality.",
     "main": "main.js",
