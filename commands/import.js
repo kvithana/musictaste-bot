@@ -13,7 +13,7 @@ const command = (worker, api) => {
      */
     const fn = async (message, args) => {
         message.channel.send(
-            `Hold on tight, <@${message.author.id}>. I'm importing your data...`,
+            `Hold on tight, <@${message.author.id}>. I'm importing your Spotify data...`,
         );
         await api.importSpotifyData();
         message.channel.send(

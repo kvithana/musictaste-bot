@@ -2,6 +2,7 @@ const { Message } = require('discord.js');
 const _ = require('lodash');
 const API = require('../services/musictasteAPI');
 const TaskMaster = require('../services/TaskMaster');
+const { shortPrefix } = require('../config.json');
 
 // embeds
 const LinkAccount = require('../embeds/LinkAccount');
@@ -17,11 +18,6 @@ const command = (worker, api) => {
      * @param {Array<string>} args
      */
     const match = async (message, args) => {
-        const isUser = await api.isUser();
-        if (!isUser) {
-            message.channel.send(LinkAccount());
-            return message.reply("you'll need to link your account first.");
-        }
         const pf = args[args.length - 1] === 'playlist';
         const taggedUserMention = message.mentions.users.first();
         if (!taggedUserMention) {
@@ -31,7 +27,7 @@ const command = (worker, api) => {
         }
         if (taggedUserMention.id === message.author.id) {
             return message.channel.send(
-                "You can't match with yourself, dummy.",
+                "You can't match with yourself, silly.",
             );
         }
         const taggedDiscordId = taggedUserMention.id;
@@ -45,7 +41,7 @@ const command = (worker, api) => {
         }
         if (!_.get(taggedUserData, 'importData.exists', false)) {
             message.channel.send(
-                `<@${taggedDiscordId}> hasn't imported their data yet. Tell them to run \`$mt import\`.`,
+                `<@${taggedDiscordId}> hasn't imported their data yet. Tell them to run \`${shortPrefix} import\`.`,
             );
         }
         worker.setRequestMatch(message.author.id, taggedDiscordId, {
@@ -53,7 +49,7 @@ const command = (worker, api) => {
             displayName: message.member.displayName,
         });
         return message.channel.send(
-            `Hey, <@${taggedDiscordId}>! <@${message.author.id}> wants to compare music tastes. To approve, type \`!mt accept @${message.member.displayName}\`. You will be sharing your Spotify profile with people you match with.`,
+            `Hey, <@${taggedDiscordId}>! <@${message.author.id}> wants to compare music tastes. To approve, type \`${shortPrefix} accept @${message.member.displayName}\`. You will share your Spotify profile with people you match with.`,
         );
     };
     return match;

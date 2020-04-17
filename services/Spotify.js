@@ -120,7 +120,7 @@ class SpotifyProvider {
     }
 
     /**
-     *
+     * Given a time range, will return a user's current top songs.
      * @param {"short_term"|"medium_term"|"long_term"} time_range
      * @param {number} limit
      */
@@ -142,7 +142,7 @@ class SpotifyProvider {
     }
 
     /**
-     *
+     * Given a time range, will return a user's current top artists.
      * @param {"short_term"|"medium_term"|"long_term"} time_range
      * @param {number} limit
      */
@@ -159,6 +159,46 @@ class SpotifyProvider {
             .catch((err) =>
                 console.error('Error with getting top artists', err),
             );
+    }
+
+    /**
+     * Creates a playlist in a given user account with the specified name and tracks.
+     * @param {string} userId
+     * @param {string} name
+     * @param {Array<string>} tracks
+     */
+    async createPlaylist(userId, name, tracks) {
+        const playlistId = await this.spotify
+            .createPlaylist(userId, name, {
+                public: false,
+            })
+            .then((res) => res.body.id)
+            .catch((err) => {
+                console.error('Error with creating playlist', err);
+            });
+        if (playlistId) {
+            await this.spotify
+                .changePlaylistDetails(playlistId, {
+                    description:
+                        'Created by the Discord bot for musictaste.space!',
+                })
+                .catch((err) =>
+                    console.error(
+                        'Error with updating playlist description',
+                        err,
+                    ),
+                );
+            await this.spotify
+                .addTracksToPlaylist(playlistId, tracks)
+                .catch((err) =>
+                    console.error(
+                        'Error with adding tracks to playlist',
+                        playlistId,
+                        err,
+                    ),
+                );
+        }
+        return playlistId;
     }
 }
 

@@ -49,8 +49,8 @@ const command = (worker, api) => {
                     user,
                     'importData.lastImport',
                 ).toDate();
-                console.log(date.differenceInDays(importDate, new Date()) > 7);
-                if (date.differenceInDays(importDate, new Date()) > 7) {
+                console.log(date.differenceInDays(new Date(), importDate) > 7);
+                if (date.differenceInDays(new Date(), importDate) > 7) {
                     message.channel.send(
                         `<@${message.author.id}>, your Spotify data is old, let me import it again...`,
                     );
@@ -65,8 +65,8 @@ const command = (worker, api) => {
                     user,
                     'importData.lastImport',
                 ).toDate();
-                console.log(date.differenceInDays(importDate, new Date()) > 7);
-                if (date.differenceInDays(importDate, new Date()) > 7) {
+                console.log(date.differenceInDays(new Date(), importDate) > 7);
+                if (date.differenceInDays(new Date(), importDate) > 7) {
                     message.channel.send(
                         `<@${taggedUserMention.id}>, your Spotify data is old, let me import it again...`,
                     );

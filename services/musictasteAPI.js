@@ -158,6 +158,11 @@ class musictasteAPI {
         }
     }
 
+    /**
+     * Gets imported Spotify data from Firestore for a user. Leave blank
+     * to get data from current user.
+     * @param {string} uid
+     */
     async getSpotifyData(uid = this.mtUID) {
         const matchDoc = await admin
             .firestore()
@@ -176,6 +181,60 @@ class musictasteAPI {
      */
     async armSpotify() {
         await this.sptfy.checkToken(this.userDoc.accessToken);
+    }
+
+    /**
+     * Checks whether current user has a match with another user based on
+     * musictaste uid or discord id. Set `isUID` to true for musictaste id.
+     * @param {string} userId
+     * @param {boolean} isUID
+     */
+    async checkMatchExists(id, isUID = false) {
+        if (!isUID) {
+            id = await this.getUIDForDiscordId(id);
+            assert(id, 'User must exist to check for match.');
+        }
+        const matchCode = await this.getMatchCode(id);
+        assert(matchCode, 'User must have a match code.');
+
+        const matchDoc = await admin
+            .firestore()
+            .collection('users')
+            .doc(this.mtUID)
+            .collection('matches')
+            .doc(matchCode)
+            .get();
+        if (!matchDoc.exists) {
+            return undefined;
+        } else {
+            return matchDoc.data();
+        }
+    }
+
+    /**
+     * Creates an list of Spotify tracks which a given array of users
+     * have in common or are likely to enjoy together.
+     * @param {Array<{ uid: string, discordid: string, matchId: string }>} users
+     * @param {number} numTracks
+     */
+    async getPlaylistTracks(users, numTracks) {
+        const makePlaylist = cFunction('createPlaylist');
+        let tracks = [];
+        for (const user of users) {
+            const result = await makePlaylist({
+                matchId: user.matchId,
+                userId: this.mtUID,
+                state: this.userDoc.serverState,
+            });
+            if (!result.success) {
+                return [];
+            } else {
+                tracks = _.uniq(tracks.concat(result.tracks));
+            }
+            console.log('track length', tracks.length);
+        }
+        let shuffled = _.shuffle(tracks);
+        return { tracks: shuffled.slice(0, numTracks), total: shuffled.length };
     }
 }
 
