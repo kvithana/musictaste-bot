@@ -13,7 +13,14 @@ require('dotenv').config();
 const LinkAccount = require('./embeds/LinkAccount');
 
 // initialise Discord client
-const client = new Discord.Client();
+const client = new Discord.Client({
+    presence: {
+        activity: {
+            name: `${prefix} help`,
+            type: 'PLAYING',
+        },
+    },
+});
 client.commands = new Discord.Collection();
 client.login(process.env.DISCORD_TOKEN);
 
@@ -41,7 +48,6 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
     console.log('Ready!');
-    client.user.setActivity('!musictaste');
     console.log(`Listening for prefixes: ${prefix} ${shortPrefix}`);
 });
 
@@ -55,7 +61,6 @@ client.on('message', async (message) => {
     ) {
         return;
     }
-    console.log('running.');
     const args = message.content.startsWith(prefix)
         ? message.content.slice(prefix.length + 1).split(/ +/)
         : message.content.slice(shortPrefix.length + 1).split(/ +/);
@@ -80,7 +85,6 @@ client.on('message', async (message) => {
     try {
         // check if user has been linked.
         const api = new API(message.author.id);
-        // const api = new API('619109165025198090');
         const isUser = await api.isUser();
         if (!isUser) {
             return message.reply(
