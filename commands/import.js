@@ -27,6 +27,7 @@ module.exports = {
     name: 'import',
     description: 'Import your Spotify music data.',
     args: false,
+    alias: ['i'],
     execute: command,
     useServices: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),

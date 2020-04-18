@@ -98,9 +98,13 @@ const command = (worker, api) => {
 
 module.exports = {
     name: 'accept',
-    description: 'Get your music taste profile.',
+    description:
+        'Accepts an incoming match request from a mentioned user, if one exists.',
+    shortDescription: 'Accepts an incoming match request.',
     args: true,
+    guildOnly: true,
     usage: '<@mention>',
+    example: '@Poppy',
     execute: command,
     useServices: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),

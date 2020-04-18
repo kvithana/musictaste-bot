@@ -43,7 +43,9 @@ const command = (worker, api) => {
 
 module.exports = {
     name: 'me',
-    description: 'Get your music taste profile.',
+    description:
+        'Get your music taste profile, displaying your top song, artist and genres.',
+    shortDescription: 'Get your music taste profile.',
     args: false,
     execute: command,
     useServices: true,

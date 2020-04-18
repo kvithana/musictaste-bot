@@ -69,10 +69,11 @@ client.on('message', async (message) => {
     const command =
         client.commands.get(commandString) ||
         client.commands.find(
-            (cmd) => cmd.aliases && cmd.aliases.includes(commandName),
+            (cmd) => cmd.alias && cmd.alias.includes(commandString),
         );
 
     if (!command) {
+        console.log('Command not found', commandName);
         return;
     }
 
@@ -82,8 +83,9 @@ client.on('message', async (message) => {
         // const api = new API('619109165025198090');
         const isUser = await api.isUser();
         if (!isUser) {
-            message.channel.send(LinkAccount());
-            return message.reply("you'll need to link your account first.");
+            return message.reply(
+                `you'll need to link your account first, try \`${shortPrefix} link\`.`,
+            );
         }
 
         if (command.guildOnly && message.channel.type !== 'text') {
@@ -94,7 +96,7 @@ client.on('message', async (message) => {
             let reply = `You didn't give me any arguments, <@${message.author.id}>.`;
 
             if (command.usage) {
-                reply += `\nThe proper usage would be: \`${shortPrefix} ${command.name} ${command.usage}\``;
+                reply += `\nThe proper usage would be: \`${shortPrefix} ${command.name} ${command.usage}\`. Get usage help with \`${shortPrefix} help ${command.name}\`.`;
             }
             return message.channel.send(reply);
         }

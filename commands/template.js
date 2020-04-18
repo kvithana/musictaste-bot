@@ -18,9 +18,10 @@ const command = (worker, api) => {
 
 module.exports = {
     name: 'temp',
-    description: 'Get your music taste profile.',
+    description: 'a description',
     args: false,
     execute: command,
     useServices: true,
+    hidden: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),
 };

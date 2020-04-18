@@ -64,10 +64,15 @@ const command = (worker, api) => {
 
 module.exports = {
     name: 'top',
-    description: 'See your top songs and artists.',
+    description:
+        'See your top songs and artists, according to your Spotify Data. \
+    You can specify whether you want to see your top `artists` or `songs` as well as \
+    the time range to look at as defined by Spotify. The `term` keyword is also optional.',
+    shortDescription: 'See your top songs and artists.',
     args: true,
     guildOnly: false,
     usage: '<artists | songs> [short term | medium term | long term]',
+    example: 'songs medium term',
     execute: command,
     useServices: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),

@@ -2,6 +2,7 @@ module.exports = {
     name: 'reload',
     description: 'Reloads a command',
     args: true,
+    hidden: true,
     usage: '<command>',
     execute(message, args) {
         if (!(message.author.id === process.env.ADMIN_ID)) {

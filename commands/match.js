@@ -57,10 +57,15 @@ const command = (worker, api) => {
 
 module.exports = {
     name: 'match',
-    description: 'Compare music tastes by matching with a user!',
+    description:
+        'Compare music tastes by matching with a user. \
+        The user must already have a musictaste.space account and have linked their Discord account.',
+    shortDescription: 'Compare music tastes with a user.',
     alias: ['m'],
     args: true,
-    usage: '<mention> [playlist]',
+    guildOnly: true,
+    usage: '<mention>',
+    example: '@Billy',
     execute: command,
     useServices: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),

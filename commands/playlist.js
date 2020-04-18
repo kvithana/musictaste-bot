@@ -133,12 +133,16 @@ const command = (worker, api) => {
 };
 
 module.exports = {
-    name: 'playlist with',
+    name: 'playlist',
     description:
-        'Create a unique playlist with the songs you have in common with someone else.',
+        'Create a unique playlist with the songs you have in common with someone else. \
+        You must have already matched with the user. You can also specify multiple users \
+        to create a playlist with by @mentioning them in the same request.',
+    shortDescription: "Make a playlist with two or more users' data.",
     args: true,
+    alias: ['p'],
     usage: '<@mention> [...@mention]',
-    example: '@Donkey',
+    example: '@Peach @Daisy',
     guildOnly: true,
     execute: command,
     useServices: true,
