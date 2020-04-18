@@ -87,9 +87,10 @@ client.on('message', async (message) => {
         const api = new API(message.author.id);
         const isUser = await api.isUser();
         if (!isUser) {
-            return message.reply(
+            message.reply(
                 `you'll need to link your account first, try \`${shortPrefix} link\`.`,
             );
+            return message.channel.send(LinkAccount());
         }
 
         if (command.guildOnly && message.channel.type !== 'text') {

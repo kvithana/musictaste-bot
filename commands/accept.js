@@ -62,7 +62,7 @@ const command = (worker, api) => {
             }
             if (_.has(matchUser, 'importData.lastImport')) {
                 const importDate = _.get(
-                    user,
+                    matchUser,
                     'importData.lastImport',
                 ).toDate();
                 console.log(date.differenceInDays(new Date(), importDate) > 7);
