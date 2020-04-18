@@ -1,6 +1,7 @@
 const { Message } = require('discord.js');
 const API = require('../services/musictasteAPI');
 const TaskMaster = require('../services/TaskMaster');
+const _ = require('lodash');
 
 // embeds
 const Me = require('../embeds/Me');
@@ -20,6 +21,7 @@ const command = (worker, api) => {
         const genres = Object.entries(spotifyData.topGenres).sort(
             (a, b) => a[1].index - b[1].index,
         );
+        // await api.compareUser('203863255620255745');
         await api.armSpotify();
         const additional = {
             trackST: await api.sptfy.getTopSongs('short_term', 1),
@@ -28,7 +30,12 @@ const command = (worker, api) => {
             artists: await api.sptfy.getTopArtists('short_term', 5),
         };
         message.channel.send(
-            Me(userData, message.member.displayName, additional, genres),
+            Me(
+                userData,
+                _.get(message, 'member.displayName', message.author.username),
+                additional,
+                genres,
+            ),
         );
     };
     return fn;
@@ -40,5 +47,6 @@ module.exports = {
     args: false,
     execute: command,
     useServices: true,
+    guildOnly: false,
     withServices: (worker, api) => ({ execute: command(worker, api) }),
 };

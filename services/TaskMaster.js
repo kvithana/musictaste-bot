@@ -24,8 +24,9 @@ class TaskMaster {
             console.log('Setted new', userId, reqColl.get(userId));
         }
         setTimeout(() => {
-            console.log('Deleted request', requestId);
-            reqColl.delete(requestId);
+            console.log('Deleted request', userId);
+            reqColl.delete(userId);
+            console.log('req', reqColl);
         }, expirationTime);
     }
 

@@ -79,14 +79,19 @@ client.on('message', async (message) => {
     try {
         // check if user has been linked.
         const api = new API(message.author.id);
+        // const api = new API('619109165025198090');
         const isUser = await api.isUser();
         if (!isUser) {
             message.channel.send(LinkAccount());
             return message.reply("you'll need to link your account first.");
         }
 
+        if (command.guildOnly && message.channel.type !== 'text') {
+            return message.reply("I can't execute that command inside DMs!");
+        }
+
         if (command.args && !args.length) {
-            let reply = `You didn't give me any arguments, ${message.member.displayName}.`;
+            let reply = `You didn't give me any arguments, <@${message.author.id}>.`;
 
             if (command.usage) {
                 reply += `\nThe proper usage would be: \`${shortPrefix} ${command.name} ${command.usage}\``;

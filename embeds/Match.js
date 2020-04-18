@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const _ = require('lodash');
+const { prefix } = require('../config.json');
 
 const good = ['🎉', '😍', '🤩', '😜', '🤪', '🥰', '😵', '🥳'];
 const okay = ['😀', '😚', '😛', '😮'];
@@ -28,43 +29,80 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
         )
         .setAuthor(
             'musictaste.space',
-            'https://musictaste.space/favicon.ico',
+            'https://musictaste.space/discord-icon.png',
             'https://musictaste.space',
         )
         .setDescription(
-            `We compared the music tastes of these two, and they share
-            ${
-                matchData.genres ? matchData.genres + ' most' : 'no genres'
-            } in common.`,
+            `I compared the music tastes of ${displayName} and ${matchDisplayName}, and here's what they had in common:`,
         )
         .setURL(`https://musictaste.space/`);
     if (matchData.artist) {
-        embed = embed
-            .addField(
-                'Top Artist In Common',
-                `_${matchData.artist.name}_`,
-                true,
-            )
-            .setImage(matchData.artist.image);
+        embed = embed.addField(
+            'Top Artist In Common',
+            `[${matchData.artist.name}](${matchData.artist.url})`,
+            true,
+        );
     }
     if (matchData.track) {
-        embed = embed
-            .addField(
-                'Top Track In Common',
-                `${matchData.track.name}\n_${matchData.track.artist}_`,
-                true,
-            )
-            .setImage(matchData.track.image);
+        embed = embed.addField(
+            'Top Track In Common',
+            `[${matchData.track.name}](${matchData.track.url})\n_${matchData.track.artist}_`,
+            true,
+        );
+        if (matchData.topTracksLT) {
+            embed = embed.addField(
+                'Matched Tracks - All Time Faves',
+                matchData.topTracksLT.map(
+                    (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
+                ),
+            );
+        }
+        if (matchData.topTracksMT) {
+            embed = embed.addField(
+                'Matched Tracks - Medium Term',
+                matchData.topTracksMT.map(
+                    (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
+                ),
+            );
+        }
+        if (matchData.topTracksST) {
+            embed = embed.addField(
+                'Matched Tracks - Recent Listens',
+                matchData.topTracksST.map(
+                    (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
+                ),
+            );
+        }
+        if (matchData.topArtistsLT) {
+            embed = embed.addField(
+                'Artists - All Time Faves',
+                matchData.topArtistsLT.map((a) => `[${a.name}](${a.url})`),
+            );
+        }
+        if (matchData.topArtistsMT) {
+            embed = embed.addField(
+                'Artists - Medium Term',
+                matchData.topArtistsMT.map((a) => `[${a.name}](${a.url})`),
+            );
+        }
+        if (matchData.topArtistsST) {
+            embed = embed.addField(
+                'Artists - Recent Listens',
+                matchData.topArtistsST.map((a) => `[${a.name}](${a.url})`),
+            );
+        }
     }
     embed = embed
         .addField(
             'See Match',
             `[Click Here](https://musictaste.space/match/${matchData.matchId})`,
         )
-        .addField('Match Command', `$musictaste match ${displayName}`)
+        .addField('Match Command', `${prefix} match ${displayName}`)
         .setTimestamp(new Date(matchData.date))
         .setFooter('musictaste.space created by Kalana Vithana')
-        .setThumbnail(userData.photoURL);
+        .setThumbnail(
+            matchData.artist ? matchData.artist.image : userData.photoURL,
+        );
     return embed;
 };
 

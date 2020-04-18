@@ -75,13 +75,13 @@ const command = (worker, api) => {
                 date.differenceInDays(
                     matchExists.matchDate.toDate(),
                     new Date(),
-                ) > 0
+                ) > 7
             ) {
                 if (
                     date.differenceInDays(
                         newDate(),
                         _.get(userData, 'importData.lastImport').toDate(),
-                    ) > 0
+                    ) > 7
                 ) {
                     message.channel.reply(
                         `I'm fetching some new data for <@${user.id}> because the data was a little old.`,
@@ -121,7 +121,7 @@ const command = (worker, api) => {
                 Math.floor((playlistTracks.total - 20) / 5),
             );
             message.reply(
-                `done! I could probably do ${morePlaylists} more ${
+                `done! I could probably make ${morePlaylists} more ${
                     playlistTracks.total === 1 ? 'combination' : 'combinations'
                 } with your current data. The more compatible your tastes, the more playlists I can make!\nHere's your playlist:`,
             );
@@ -133,12 +133,13 @@ const command = (worker, api) => {
 };
 
 module.exports = {
-    name: 'playlist',
+    name: 'playlist with',
     description:
         'Create a unique playlist with the songs you have in common with someone else.',
     args: true,
     usage: '<@mention> [...@mention]',
     example: '@Donkey',
+    guildOnly: true,
     execute: command,
     useServices: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),

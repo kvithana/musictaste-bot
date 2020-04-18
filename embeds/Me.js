@@ -7,7 +7,7 @@ const Me = (userData, displayName, additional, genres) => {
         .setTitle(userData.displayName)
         .setAuthor(
             'musictaste.space',
-            'https://musictaste.space/favicon.ico',
+            'https://musictaste.space/discord-icon.png',
             'https://musictaste.space',
         )
         .setDescription(

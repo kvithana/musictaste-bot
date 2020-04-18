@@ -32,6 +32,7 @@ const command = (worker, api) => {
             await api.armSpotify();
             const songs = await api.sptfy.getTopSongs(
                 timePeriod ? timePeriod.replace(' ', '_') : 'short_term',
+                9,
             );
             return message.channel.send(
                 TopSongs(
@@ -46,6 +47,7 @@ const command = (worker, api) => {
             await api.armSpotify();
             const songs = await api.sptfy.getTopArtists(
                 timePeriod ? timePeriod.replace(' ', '_') : 'short_term',
+                9,
             );
             message.channel.send(
                 TopArtists(
@@ -64,6 +66,7 @@ module.exports = {
     name: 'top',
     description: 'See your top songs and artists.',
     args: true,
+    guildOnly: false,
     usage: '<artists | songs> [short term | medium term | long term]',
     execute: command,
     useServices: true,

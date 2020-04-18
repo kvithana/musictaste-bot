@@ -98,7 +98,6 @@ class musictasteAPI {
                         ? matchData.matchedGenres
                               .slice(0, 5)
                               .map((v) => v.genre)
-                              .join(', ')
                         : undefined,
                     track: matchedTracks.length
                         ? await this.sptfy.getTrack(matchedTracks[0].id)
@@ -106,6 +105,48 @@ class musictasteAPI {
                     artist: matchData.matchedArtists.length
                         ? await this.sptfy.getArtist(
                               matchData.matchedArtists[0].id,
+                          )
+                        : undefined,
+                    topTracksLT: matchData.matchedTracksLongTerm
+                        ? await this.sptfy.getTracks(
+                              matchData.matchedTracksLongTerm
+                                  .slice(0, 5)
+                                  .map((v) => v.id),
+                          )
+                        : undefined,
+                    topTracksMT: matchData.matchedTracksMediumTerm
+                        ? await this.sptfy.getTracks(
+                              matchData.matchedTracksMediumTerm
+                                  .slice(0, 5)
+                                  .map((v) => v.id),
+                          )
+                        : undefined,
+                    topTracksST: matchData.matchedTracksShortTerm
+                        ? await this.sptfy.getTracks(
+                              matchData.matchedTracksShortTerm
+                                  .slice(0, 5)
+                                  .map((v) => v.id),
+                          )
+                        : undefined,
+                    topArtistsLT: matchData.matchedArtists
+                        ? await this.sptfy.getArtists(
+                              matchData.matchedArtists
+                                  .slice(0, 5)
+                                  .map((v) => v.id),
+                          )
+                        : undefined,
+                    topArtistsMT: matchData.matchedArtistsMediumTerm
+                        ? await this.sptfy.getArtists(
+                              matchData.matchedArtistsMediumTerm
+                                  .slice(0, 5)
+                                  .map((v) => v.id),
+                          )
+                        : undefined,
+                    topArtistsST: matchData.matchedArtistsShortTerm
+                        ? await this.sptfy.getArtists(
+                              matchData.matchedArtistsShortTerm
+                                  .slice(0, 5)
+                                  .map((v) => v.id),
                           )
                         : undefined,
                 };

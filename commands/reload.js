@@ -4,6 +4,11 @@ module.exports = {
     args: true,
     usage: '<command>',
     execute(message, args) {
+        if (!(message.author.id === process.env.ADMIN_ID)) {
+            return message.channel.send(
+                'You are not authorised to perform this command.',
+            );
+        }
         const commandName = args[0].toLowerCase();
         const command =
             message.client.commands.get(commandName) ||

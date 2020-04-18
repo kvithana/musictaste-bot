@@ -35,7 +35,7 @@ const command = (worker, api) => {
         const taggedUserData = await api.getUser(taggedUserId);
         if (!taggedUserId) {
             message.channel.send(
-                `<@${taggedDiscordId}> hasn't linked their musictaste.space account.`,
+                `<@${taggedDiscordId}> hasn't linked their musictaste.space account, try \`${shortPrefix} link\`.`,
             );
             return message.channel.send(LinkAccount());
         }

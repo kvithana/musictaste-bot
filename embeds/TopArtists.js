@@ -14,8 +14,10 @@ const TopArtists = (userData, displayName, songs, time) => {
 
     songs.map((v, i) => {
         embed = embed.addField(
-            '\u200B',
-            `${i + 1}. [${v.name}](${v.url})`,
+            `${i + 1}${Array.from({ length: 30 })
+                .map((x) => '\u0020')
+                .join('')}\u200B`,
+            `[${v.name}](${v.url})`,
             true,
         );
     });
@@ -24,3 +26,7 @@ const TopArtists = (userData, displayName, songs, time) => {
 };
 
 module.exports = TopArtists;
+
+/**
+ * `${'\u200B'}`
+ */

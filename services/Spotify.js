@@ -95,6 +95,7 @@ class SpotifyProvider {
                 return {
                     name: data.name,
                     image: data.images[0].url,
+                    url: data.external_urls.spotify,
                 };
             })
             .catch((err) => console.error('Error with getting artist', err));
@@ -114,9 +115,51 @@ class SpotifyProvider {
                     name: data.name,
                     artist: data.artists.map((a) => a.name).join(', '),
                     image: data.album.images[0].url,
+                    url: data.external_urls.spotify,
                 };
             })
             .catch((err) => console.error('Error with getting track', err));
+    }
+
+    /**
+     * Given an array ofSpotify track URI, returns an array of the name, artists and album
+     * image as an object.
+     * @param {string} id
+     */
+    async getTracks(ids) {
+        return this.spotify
+            .getTracks(ids)
+            .then((tracks) => {
+                const trackData = tracks.body;
+                return trackData.tracks.map((data) => ({
+                    name: data.name,
+                    artist: data.artists.map((a) => a.name).join(', '),
+                    image: data.album.images[0].url,
+                    url: data.external_urls.spotify,
+                }));
+            })
+            .catch((err) =>
+                console.error('Error with getting multiple tracks', err),
+            );
+    }
+
+    /**
+     * Given an array of Spotify artist URI, returns an array of the name and image of
+     * the artists as an object.
+     * @param {string} ids
+     */
+    async getArtists(ids) {
+        return this.spotify
+            .getArtists(ids)
+            .then((artists) => {
+                const artistData = artists.body;
+                return artistData.artists.map((data) => ({
+                    name: data.name,
+                    image: data.images[0].url,
+                    url: data.external_urls.spotify,
+                }));
+            })
+            .catch((err) => console.error('Error with getting artist', err));
     }
 
     /**
