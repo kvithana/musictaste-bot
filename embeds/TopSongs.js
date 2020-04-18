@@ -9,7 +9,7 @@ const TopSongs = (userData, displayName, songs, time) => {
             'https://musictaste.space/discord-icon.png',
             'https://musictaste.space',
         )
-        .setDescription(`Here is ${displayName}'s top songs in the ${time}.`)
+        .setDescription(`Here are ${displayName}'s top songs in the ${time}.`)
         .setThumbnail(userData.photoURL);
 
     songs.map((v, i) => {

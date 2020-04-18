@@ -87,9 +87,7 @@ client.on('message', async (message) => {
         const api = new API(message.author.id);
         const isUser = await api.isUser();
         if (!isUser) {
-            message.reply(
-                `you'll need to link your account first, try \`${shortPrefix} link\`.`,
-            );
+            message.reply(`you'll need to link your account first.`);
             return message.channel.send(LinkAccount());
         }
 
