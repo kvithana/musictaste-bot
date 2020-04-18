@@ -11,9 +11,9 @@ const CommandHelp = (commands) => {
             'https://musictaste.space',
         )
         .setDescription(
-            'musictaste.space lets you compare your Spotify music taste with friends! \
+            '(This bot is in **beta**!) musictaste.space lets you compare your Spotify music taste with friends! \
             You can see your own top artists and songs, or create playlists with others full of songs you both have in common.\n\n\
-            You learn more, look at your data and see matches on the website [here](https://musictaste.space).',
+            Learn more, look at your data and see matches on the website [here](https://musictaste.space).',
         )
         .setThumbnail('https://musictaste.space/discord-icon.png')
         .setFooter('musictaste.space created by Kalana Vithana.')
