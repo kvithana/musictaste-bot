@@ -69,7 +69,8 @@ client.on('message', async (message) => {
     const commandString = args.shift().toLowerCase();
 
     console.log('command', commandString, 'args', args);
-    const tm = CM.getTaskMaster(message.channel.id);
+
+    const tm = await CM.getTaskMaster(message.channel.id, message.guild.name);
 
     const command =
         client.commands.get(commandString) ||
@@ -78,7 +79,7 @@ client.on('message', async (message) => {
         );
 
     if (!command) {
-        console.log('Command not found', commandName);
+        console.log('Command not found', commandString);
         return;
     }
 

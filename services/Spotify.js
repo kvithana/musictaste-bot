@@ -64,19 +64,15 @@ class SpotifyProvider {
         const token = await this.spotify
             .refreshAccessToken()
             .then(async (res) => {
-                return admin
-                    .firestore()
-                    .collection('users')
-                    .doc(userId)
-                    .set(
-                        {
-                            accessToken: res.body.access_token,
-                            refreshToken: this.spotify.getRefreshToken(),
-                            accessTokenRefresh: new Date(),
-                        },
-                        { merge: true },
-                    )
-                    .then((_) => res.body.access_token);
+                await admin.firestore().collection('users').doc(userId).set(
+                    {
+                        accessToken: res.body.access_token,
+                        refreshToken: this.spotify.getRefreshToken(),
+                        accessTokenRefresh: new Date(),
+                    },
+                    { merge: true },
+                );
+                return res.body.access_token;
             })
             .catch((err) => console.error(err));
         return this.spotify.setAccessToken(token);
@@ -242,6 +238,69 @@ class SpotifyProvider {
                 );
         }
         return playlistId;
+    }
+
+    /**
+     * Creates a collaborative playlist in a user
+     * @param {string} userId
+     * @param {string} name
+     */
+    async createCollabPlaylist(userId, name) {
+        const playlistId = await this.spotify
+            .createPlaylist(userId, name, {
+                public: false,
+            })
+            .then((res) => res.body.id)
+            .catch((err) => {
+                console.error('Error with creating playlist', err);
+            });
+
+        if (playlistId) {
+            await this.spotify
+                .changePlaylistDetails(playlistId, {
+                    description:
+                        'A playlist for the song challenge created by the Discord bot for musictaste.space!',
+                    collaborative: false,
+                })
+                .catch((err) =>
+                    console.error(
+                        'Error with updating playlist description',
+                        err,
+                    ),
+                );
+        }
+        return playlistId;
+    }
+
+    /**
+     * Adds songs to a user's playlist
+     * @param {string} playlistId
+     * @param {Array<string>} tracks
+     */
+    async addTracksToPlaylist(playlistId, tracks) {
+        await this.spotify.followPlaylist(playlistId);
+        await this.spotify
+            .addTracksToPlaylist(playlistId, tracks)
+            .catch((err) =>
+                console.error(
+                    'Error with adding tracks to playlist',
+                    playlistId,
+                    err,
+                ),
+            );
+    }
+
+    async searchTracks(query, limit = 1) {
+        console.log('Searching', query);
+        return this.spotify.searchTracks(query, { limit }).then((t) =>
+            t.body.tracks.items.map((track) => ({
+                id: track.id,
+                name: track.name,
+                artist: track.artists.map((a) => a.name).join(', '),
+                image: track.album.images[0].url,
+                url: track.external_urls.spotify,
+            })),
+        );
     }
 }
 

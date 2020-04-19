@@ -5,6 +5,11 @@ const _ = require('lodash');
 const assert = require('assert').strict;
 const fetch = require('node-fetch');
 
+/**
+ * Wrapper around Firebase Cloud Function to call the relevant endpoint and return the
+ * data as a JS object.
+ * @param {string} fn
+ */
 const cFunction = (fn) => async (data) => {
     const CLOUD_FUNCTION_MAP = {
         compareUsers: process.env.FUNCTION_COMPARE_USERS,

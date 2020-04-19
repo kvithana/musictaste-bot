@@ -140,7 +140,6 @@ module.exports = {
         to create a playlist with by @mentioning them in the same request.',
     shortDescription: "Make a playlist with two or more users' data.",
     args: true,
-    alias: ['p'],
     usage: '<@mention> [...@mention]',
     example: '@Peach @Daisy',
     guildOnly: true,

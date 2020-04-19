@@ -1,17 +1,20 @@
 const Discord = require('discord.js');
+const songChallenge = require('./SongChallenge');
 class TaskMaster {
-    constructor() {
+    constructor(channel, name) {
         this.awaitingConfirm = new Discord.Collection();
+        this.trackConfirm = new Discord.Collection();
+        this.songChallenge = new songChallenge(channel, name);
     }
 
     /**
      * Given a `userId`, sets a request flag with a callback function `fn`
      * to be executed on approval by `requestId`.
-     * A request expires in `expirationTime`, by default 2 minutes.
+     * A request expires in `expirationTime`, by default 5 minutes.
      * @param {string} userId
      * @param {string} requestId
      */
-    setRequestMatch(userId, requestId, data, expirationTime = 120000) {
+    setRequestMatch(userId, requestId, data, expirationTime = 300000) {
         let reqColl;
         if (this.awaitingConfirm.has(requestId)) {
             reqColl = this.awaitingConfirm.get(requestId);
@@ -46,6 +49,35 @@ class TaskMaster {
             }
         }
         return false;
+    }
+
+    /**
+     * Lets the user respond to a song prompt, which can then be confirmed.
+     * @param {string} userId
+     * @param {string} trackId
+     * @param {number} expirationTime
+     */
+    setTrackResponse(userId, trackId, expirationTime = 120000) {
+        this.trackConfirm.set(userId, trackId);
+        let reqColl = this.trackConfirm;
+        setTimeout(() => {
+            console.log('Deleted track', userId);
+            if (reqColl.has(userId) && reqColl.get(userId) === trackId) {
+                reqColl.delete(userId);
+                console.log('req', reqColl);
+            }
+        }, expirationTime);
+    }
+
+    /**
+     * Gets the user's current track response if it exists.
+     * @param {string} userId
+     */
+    verifyTrackResponse(userId) {
+        if (!this.trackConfirm.has(userId)) {
+            return false;
+        }
+        return this.trackConfirm.get(userId);
     }
 }
 
