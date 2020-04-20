@@ -67,7 +67,8 @@ const command = (worker, api) => {
                 console.log('trackId', trackId);
                 await worker.songChallenge.getPrompt(api);
                 await api.armSpotify();
-                await api.isUser(); // hacky attempted fix for Spotify token bug;
+                await api.isUser(); // hacky attempted fix for Spotify token bug
+                await api.armSpotify(); // hacky attempted fix for Spotify token bug
                 const trackData = await api.sptfy.getTrack(
                     trackId.replace('spotify:track:', ''),
                 );
