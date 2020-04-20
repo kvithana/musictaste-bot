@@ -17,7 +17,7 @@ const command = async (message, args) => {
         const command =
             client.commands.get(commandString) ||
             client.commands.find(
-                (cmd) => cmd.aliases && cmd.aliases.includes(commandName),
+                (cmd) => cmd.alias && cmd.alias.includes(commandString),
             );
 
         if (!command || command.hidden) {
