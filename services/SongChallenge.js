@@ -55,7 +55,6 @@ class SongChallenge {
                 .doc('song-challenge')
                 .get();
             if (!channelDoc.exists) {
-                await api.armSpotify();
                 const playlistId = await api.sptfy.createCollabPlaylist(
                     api.userDoc.spotifyID,
                     this.cName,
@@ -121,7 +120,6 @@ class SongChallenge {
         } else {
             const _api = new API(this.playlistOwnerDiscordId);
             await _api.isUser();
-            await _api.armSpotify();
             await _api.sptfy.addTracksToPlaylist(this.playlistId, [trackId]);
             await admin
                 .firestore()
@@ -180,7 +178,6 @@ class SongChallenge {
             .orderBy('addedDate', 'desc')
             .limit(5)
             .get();
-        await api.armSpotify();
         const formattedData = responses.empty
             ? []
             : await Promise.all(
@@ -224,7 +221,6 @@ class SongChallenge {
             .orderBy('addedDate', 'asc')
             .limit(20)
             .get();
-        await api.armSpotify();
         const formattedData = responses.empty
             ? []
             : await Promise.all(

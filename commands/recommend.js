@@ -3,7 +3,7 @@ const API = require('../services/musictasteAPI');
 const TaskMaster = require('../services/TaskMaster');
 
 const RecommendedTrack = require('../embeds/RecommendedTrack');
-
+const { shortPrefix } = require('../config.json');
 /**
  * @param {TaskMaster} worker
  * @param {API} api

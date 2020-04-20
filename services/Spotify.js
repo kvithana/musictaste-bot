@@ -306,11 +306,7 @@ class SpotifyProvider {
                 })),
             )
             .catch((err) =>
-                console.error(
-                    'Error with adding tracks to playlist',
-                    playlistId,
-                    err,
-                ),
+                console.error('Error with adding tracks to playlist', err),
             );
     }
 

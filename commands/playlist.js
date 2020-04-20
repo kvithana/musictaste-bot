@@ -100,7 +100,6 @@ const command = (worker, api) => {
                 username: user.username,
             });
         }
-        await api.armSpotify();
         const playlistTracks = await api.getPlaylistTracks(participants, 20);
         if (!_.has(playlistTracks, 'tracks') || !playlistTracks.tracks.length) {
             return message.reply(
