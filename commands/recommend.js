@@ -44,7 +44,7 @@ const command = (worker, api) => {
         }
         if (!trackId) {
             return message.reply(
-                `you didn't give me a valid Spotify URL, URI or search parameter. Need help? Try \`${shortPrefix} help prompt\``,
+                `you didn't give me a valid Spotify URL, URI or search parameter. Need help? Try \`${shortPrefix} help recommend\``,
             );
         }
         const rec = await api.sptfy.getRecommendation(
