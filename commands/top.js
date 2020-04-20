@@ -29,7 +29,6 @@ const command = (worker, api) => {
         }
 
         if (args[0] === 'songs') {
-            await api.armSpotify();
             const songs = await api.sptfy.getTopSongs(
                 timePeriod ? timePeriod.replace(' ', '_') : 'short_term',
                 9,
@@ -44,7 +43,6 @@ const command = (worker, api) => {
             );
         }
         if (args[0] === 'artists') {
-            await api.armSpotify();
             const songs = await api.sptfy.getTopArtists(
                 timePeriod ? timePeriod.replace(' ', '_') : 'short_term',
                 9,

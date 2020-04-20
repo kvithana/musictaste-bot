@@ -29,7 +29,7 @@ class musictasteAPI {
             this.userDoc = userDoc.docs[0].data();
             this.mtUID = userDoc.docs[0].id;
             this.sptfy = new Sptfy(this.mtUID);
-            this.sptfy.checkToken(this.userDoc.accessToken);
+            await this.sptfy.checkToken(this.userDoc.accessToken);
             return true;
         }
     }

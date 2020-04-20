@@ -22,7 +22,6 @@ const command = (worker, api) => {
             (a, b) => a[1].index - b[1].index,
         );
         // await api.compareUser('203863255620255745');
-        await api.armSpotify();
         const additional = {
             trackST: await api.sptfy.getTopSongs('short_term', 1),
             trackMT: await api.sptfy.getTopSongs('medium_term', 1),

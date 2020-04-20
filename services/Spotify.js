@@ -54,7 +54,7 @@ class SpotifyProvider {
                 return;
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err);
                 throw new Error(
                     'Error with retrieving accessToken for user from database',
                 );
