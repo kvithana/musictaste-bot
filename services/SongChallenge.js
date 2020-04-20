@@ -84,12 +84,27 @@ class SongChallenge {
         }
     }
 
+    async getChannelData(cid = this.cid) {
+        const channelDoc = await admin
+            .firestore()
+            .collection('discord')
+            .doc(cid)
+            .collection('activities')
+            .doc('song-challenge')
+            .get();
+        const data = channelDoc.data();
+        this.playlistId = data.playlistId;
+        this.playlistOwnerDiscordId = data.discordUser;
+        this.playlistOwnerId = data.playlistUser;
+    }
+
     /**
      * Adds a song to today's prompt if the user hasn't already added a song.
      * @param {API} api
      * @param {string} trackId
      */
     async addSongToPrompt(api, trackId) {
+        await this.getChannelData();
         const response = await admin
             .firestore()
             .collection('discord')
