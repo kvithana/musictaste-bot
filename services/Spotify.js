@@ -316,6 +316,7 @@ class SpotifyProvider {
                 seed_tracks: [trackId],
                 min_popularity: 50,
                 limit,
+                market: 'AU',
             })
             .then((r) =>
                 r.body.tracks.map((track) => ({
