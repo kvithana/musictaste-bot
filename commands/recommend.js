@@ -86,6 +86,8 @@ const command = (worker, api) => {
 
 module.exports = {
     name: 'recommend',
+    shortDescription:
+        'Get a random track suggestion with a given track as inspiration.',
     description:
         'Get a random track suggestion with a given track as inspiration.\n\
         Specify `playlist` at the end of arguments to generate 20 recommendations as a playlist',
