@@ -75,7 +75,9 @@ class SpotifyProvider {
                 return res.body.access_token;
             })
             .catch((err) => console.error(err));
-        return this.spotify.setAccessToken(token);
+        if (token) {
+            return this.spotify.setAccessToken(token);
+        }
     }
 
     /**
@@ -292,15 +294,46 @@ class SpotifyProvider {
 
     async searchTracks(query, limit = 1) {
         console.log('Searching', query);
-        return this.spotify.searchTracks(query, { limit }).then((t) =>
-            t.body.tracks.items.map((track) => ({
-                id: track.id,
-                name: track.name,
-                artist: track.artists.map((a) => a.name).join(', '),
-                image: track.album.images[0].url,
-                url: track.external_urls.spotify,
-            })),
-        );
+        return this.spotify
+            .searchTracks(query, { limit })
+            .then((t) =>
+                t.body.tracks.items.map((track) => ({
+                    id: track.id,
+                    name: track.name,
+                    artist: track.artists.map((a) => a.name).join(', '),
+                    image: track.album.images[0].url,
+                    url: track.external_urls.spotify,
+                })),
+            )
+            .catch((err) =>
+                console.error(
+                    'Error with adding tracks to playlist',
+                    playlistId,
+                    err,
+                ),
+            );
+    }
+
+    async getRecommendation(trackId, limit = 1) {
+        return this.spotify
+            .getRecommendations({
+                seed_tracks: [trackId],
+                min_popularity: 50,
+                limit,
+            })
+            .then((r) =>
+                r.body.tracks.map((track) => ({
+                    id: track.id,
+                    name: track.name,
+                    artist: track.artists.map((a) => a.name).join(', '),
+                    image: track.album.images[0].url,
+                    url: track.external_urls.spotify,
+                })),
+            )
+            .catch((err) => {
+                console.error('Error with getting recommendation', err);
+                return [];
+            });
     }
 }
 

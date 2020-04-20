@@ -25,7 +25,11 @@ const CommandHelp = (command) => {
         );
     }
     if (command.alias) {
-        embed = embed.addField('Alias', `\`${command.alias}\``, true);
+        embed = embed.addField(
+            'Alias',
+            command.alias.map((a) => `\`${a}\``).join(', '),
+            true,
+        );
     }
 
     embed = embed
