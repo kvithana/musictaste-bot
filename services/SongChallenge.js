@@ -118,6 +118,10 @@ class SongChallenge {
         if (response.exists) {
             return false;
         } else {
+            console.log('playlist owner', this.playlistOwnerDiscordId);
+            if (!this.playlistOwnerDiscordId) {
+                return false;
+            }
             const _api = new API(this.playlistOwnerDiscordId);
             await _api.isUser();
             await _api.sptfy.addTracksToPlaylist(this.playlistId, [trackId]);
@@ -136,6 +140,7 @@ class SongChallenge {
                     displayName: api.userDoc.displayName,
                     addedDate: new Date(),
                 });
+            return true;
         }
     }
 

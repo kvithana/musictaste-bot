@@ -99,11 +99,20 @@ const command = (worker, api) => {
             case 'confirm':
                 const tId = worker.verifyTrackResponse(message.author.id);
                 if (tId) {
-                    await worker.songChallenge.addSongToPrompt(api, tId);
-                    return message.reply(
-                        'done! Your song has been added to the collaborative playlist. You can get the link with ' +
-                            `\`${shortPrefix} prompt playlist\``,
+                    const res = await worker.songChallenge.addSongToPrompt(
+                        api,
+                        tId,
                     );
+                    if (res) {
+                        return message.reply(
+                            'done! Your song has been added to the collaborative playlist. You can get the link with ' +
+                                `\`${shortPrefix} prompt playlist\``,
+                        );
+                    } else {
+                        return message.reply(
+                            'something went wrong, try again later.',
+                        );
+                    }
                 } else {
                     return message.reply(
                         `looks like you haven't sent me a track yet, or you didn't confirm your last track in time. Send me another one with \`${shortPrefix} prompt respond\``,
