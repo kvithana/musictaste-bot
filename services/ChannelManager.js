@@ -25,11 +25,11 @@ class ChannelManager {
                 .get()
                 .then((doc) => doc.exists);
             if (!channelExistsOnDB) {
-                await admin
-                    .firestore()
-                    .collection('discord')
-                    .doc(channel)
-                    .set({ created: new Date(), lastResetAccess: new Date() });
+                await admin.firestore().collection('discord').doc(channel).set({
+                    created: new Date(),
+                    lastResetAccess: new Date(),
+                    name,
+                });
             } else {
                 await admin
                     .firestore()

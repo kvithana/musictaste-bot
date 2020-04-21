@@ -70,7 +70,10 @@ client.on('message', async (message) => {
 
     console.log('command', commandString, 'args', args);
 
-    const tm = await CM.getTaskMaster(message.channel.id, message.guild.name);
+    let tm;
+    if (message.channel.type === 'text') {
+        tm = await CM.getTaskMaster(message.guild.id, message.guild.name);
+    }
 
     const command =
         client.commands.get(commandString) ||

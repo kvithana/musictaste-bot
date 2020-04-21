@@ -83,11 +83,12 @@ class SongChallenge {
         }
     }
 
-    async getChannelData(cid = this.cid) {
+    async getChannelData() {
+        console.log('song challenge channel id', this.cid);
         const channelDoc = await admin
             .firestore()
             .collection('discord')
-            .doc(cid)
+            .doc(this.cid)
             .collection('activities')
             .doc('song-challenge')
             .get();
