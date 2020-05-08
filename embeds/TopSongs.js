@@ -16,6 +16,11 @@ const TopSongs = (userData, displayName, songs, time) => {
         embed = embed.addField(v.artist, `[${v.name}](${v.url})`);
     });
 
+    embed = embed.addField(
+        'More',
+        'Want to see more? Click [here](https://musictaste.space/insights/all) to see a full list.',
+    );
+
     return embed;
 };
 
