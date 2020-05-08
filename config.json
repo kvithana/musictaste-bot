@@ -1,5 +1,5 @@
 {
     "prefix": "!musictaste",
     "shortPrefix": "!mt",
-    "matchTimeout": 60000
+    "matchTimeout": 600000
 }
