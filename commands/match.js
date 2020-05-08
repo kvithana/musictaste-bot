@@ -2,7 +2,7 @@ const { Message } = require('discord.js');
 const _ = require('lodash');
 const API = require('../services/musictasteAPI');
 const TaskMaster = require('../services/TaskMaster');
-const { shortPrefix } = require('../config.json');
+const { shortPrefix, matchTimeout } = require('../config.json');
 
 // embeds
 const LinkAccount = require('../embeds/LinkAccount');
@@ -49,7 +49,13 @@ const command = (worker, api) => {
             displayName: message.member.displayName,
         });
         return message.channel.send(
-            `Hey, <@${taggedDiscordId}>! <@${message.author.id}> wants to compare music tastes. To approve, type \`${shortPrefix} accept @${message.member.displayName}\`. You will share your Spotify profile with people you match with.`,
+            `Hey, <@${taggedDiscordId}>! <@${
+                message.author.id
+            }> wants to compare music tastes. To approve, type \`${shortPrefix} accept @${
+                message.member.displayName
+            }\`. You will share your Spotify profile with people you match with. This request will expire after ${Math.floor(
+                matchTimeout / 1000 / 60,
+            )} mins.`,
         );
     };
     return match;

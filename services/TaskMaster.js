@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const songChallenge = require('./SongChallenge');
+const { matchTimeout } = require('../config.json');
 class TaskMaster {
     constructor(channel, name) {
         this.awaitingConfirm = new Discord.Collection();
@@ -14,7 +15,7 @@ class TaskMaster {
      * @param {string} userId
      * @param {string} requestId
      */
-    setRequestMatch(userId, requestId, data, expirationTime = 300000) {
+    setRequestMatch(userId, requestId, data, expirationTime = matchTimeout) {
         let reqColl;
         if (this.awaitingConfirm.has(requestId)) {
             reqColl = this.awaitingConfirm.get(requestId);
