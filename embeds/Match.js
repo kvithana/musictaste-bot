@@ -97,7 +97,7 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
             'See Match',
             `[Click Here](https://musictaste.space/match/${matchData.matchId})`,
         )
-        .addField('Match Command', `${prefix} match ${displayName}`)
+        .addField('Match Command', `${prefix} match @${displayName}`)
         .setTimestamp(new Date(matchData.date))
         .setFooter('musictaste.space created by Kalana Vithana')
         .setThumbnail(
