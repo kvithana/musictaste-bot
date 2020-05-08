@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const { prefix, shortPrefix } = require('./config');
 const admin = require('firebase-admin');
 const fs = require('fs');
+const _ = require('lodash');
 
 const API = require('./services/musictasteAPI');
 const ChannelManager = require('./services/ChannelManager');
@@ -46,6 +47,26 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
+// some confusions
+const confusions = [
+    "I don't quite understand that.",
+    'wait, what?',
+    'uhhhhhhhhhhhhh.',
+    'hmmmmmmmmmmmm.',
+    'thinking face emoji.',
+    'what do you mean?',
+    'please talk in a language I can understand.',
+    "I don't understand your gibberish.",
+    "that doesn't seem like a valid command.",
+    "I don't get it.",
+    "that doesn't look quite right.",
+    'I think you made a typo.',
+    'I think you made an oopsie.',
+    'what do you mean by that?',
+    'I think you made a mistake.',
+    "I'm a little confused.",
+];
+
 client.once('ready', () => {
     console.log('Ready!');
     console.log(`Listening for prefixes: ${prefix} ${shortPrefix}`);
@@ -82,6 +103,11 @@ client.on('message', async (message) => {
         );
 
     if (!command) {
+        message.reply(
+            `${_.sample(
+                confusions,
+            )} Try \`${shortPrefix} help\` to see a list of my commands.`,
+        );
         console.log('Command not found', commandString);
         return;
     }
@@ -115,6 +141,8 @@ client.on('message', async (message) => {
         cmd.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply('there was an error trying to execute that command!');
+        message.reply(
+            "there was an error trying to execute that command! I'll send the monkeys to investigate.",
+        );
     }
 });

@@ -13,6 +13,11 @@ const sentences = [
     'Checking the compatibility of',
     'Creating a GUI in Visual Basic for',
     'Thinking really hard about the compatibility of',
+    'Colliding the musical electrons of',
+    'Calculating the angle of refraction of',
+    'Learning particle physics to determine the compatibiliy of',
+    'Breaking the sound barrier for',
+    'Using my last brain cell to calculate the compatibility of',
 ];
 
 /**
@@ -105,6 +110,7 @@ module.exports = {
     guildOnly: true,
     usage: '<@mention>',
     example: '@Poppy',
+    alias: ['approve'],
     execute: command,
     useServices: true,
     withServices: (worker, api) => ({ execute: command(worker, api) }),
