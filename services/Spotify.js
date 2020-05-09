@@ -126,7 +126,7 @@ class SpotifyProvider {
      */
     async getTracks(ids) {
         return this.spotify
-            .getTracks(ids)
+            .getTracks(ids.filter(Boolean))
             .then((tracks) => {
                 const trackData = tracks.body;
                 return trackData.tracks.map((data) => ({
@@ -148,7 +148,7 @@ class SpotifyProvider {
      */
     async getArtists(ids) {
         return this.spotify
-            .getArtists(ids)
+            .getArtists(ids.filter(Boolean))
             .then((artists) => {
                 const artistData = artists.body;
                 return artistData.artists.map((data) => ({
