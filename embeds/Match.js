@@ -50,7 +50,7 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
             true,
         );
     }
-    if (matchData.topTracksLT.length) {
+    if (matchData.topTracksLT && matchData.topTracksLT.length) {
         embed = embed.addField(
             'Matched Tracks - All Time Faves',
             matchData.topTracksLT.map(
@@ -58,7 +58,7 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
             ),
         );
     }
-    if (matchData.topTracksMT.length) {
+    if (matchData.topTracksMT && matchData.topTracksMT.length) {
         embed = embed.addField(
             'Matched Tracks - Medium Term',
             matchData.topTracksMT.map(
@@ -66,7 +66,7 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
             ),
         );
     }
-    if (matchData.topTracksST.length) {
+    if (matchData.topTracksST && matchData.topTracksST.length) {
         embed = embed.addField(
             'Matched Tracks - Recent Listens',
             matchData.topTracksST.map(
@@ -74,19 +74,19 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
             ),
         );
     }
-    if (matchData.topArtistsLT.length) {
+    if (matchData.topArtistsLT && matchData.topArtistsLT.length) {
         embed = embed.addField(
             'Artists - All Time Faves',
             matchData.topArtistsLT.map((a) => `[${a.name}](${a.url})`),
         );
     }
-    if (matchData.topArtistsMT.length) {
+    if (matchData.topArtistsMT && matchData.topArtistsMT.length) {
         embed = embed.addField(
             'Artists - Medium Term',
             matchData.topArtistsMT.map((a) => `[${a.name}](${a.url})`),
         );
     }
-    if (matchData.topArtistsST.length) {
+    if (matchData.topArtistsST && matchData.topArtistsST.length) {
         embed = embed.addField(
             'Artists - Recent Listens',
             matchData.topArtistsST.map((a) => `[${a.name}](${a.url})`),

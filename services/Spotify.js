@@ -177,9 +177,10 @@ class SpotifyProvider {
                     url: track.external_urls.spotify,
                 }));
             })
-            .catch((err) =>
-                console.error('Error with getting top tracks', err),
-            );
+            .catch((err) => {
+                console.error('Error with getting top tracks', err);
+                return [];
+            });
     }
 
     /**
@@ -197,9 +198,10 @@ class SpotifyProvider {
                     url: artist.external_urls.spotify,
                 }));
             })
-            .catch((err) =>
-                console.error('Error with getting top artists', err),
-            );
+            .catch((err) => {
+                console.error('Error with getting top artists', err);
+                return [];
+            });
     }
 
     /**
