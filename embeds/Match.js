@@ -49,48 +49,48 @@ const Match = (userData, matchData, displayName, matchDisplayName) => {
             `[${matchData.track.name}](${matchData.track.url})\n_${matchData.track.artist}_`,
             true,
         );
-        if (matchData.topTracksLT) {
-            embed = embed.addField(
-                'Matched Tracks - All Time Faves',
-                matchData.topTracksLT.map(
-                    (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
-                ),
-            );
-        }
-        if (matchData.topTracksMT) {
-            embed = embed.addField(
-                'Matched Tracks - Medium Term',
-                matchData.topTracksMT.map(
-                    (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
-                ),
-            );
-        }
-        if (matchData.topTracksST) {
-            embed = embed.addField(
-                'Matched Tracks - Recent Listens',
-                matchData.topTracksST.map(
-                    (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
-                ),
-            );
-        }
-        if (matchData.topArtistsLT) {
-            embed = embed.addField(
-                'Artists - All Time Faves',
-                matchData.topArtistsLT.map((a) => `[${a.name}](${a.url})`),
-            );
-        }
-        if (matchData.topArtistsMT) {
-            embed = embed.addField(
-                'Artists - Medium Term',
-                matchData.topArtistsMT.map((a) => `[${a.name}](${a.url})`),
-            );
-        }
-        if (matchData.topArtistsST) {
-            embed = embed.addField(
-                'Artists - Recent Listens',
-                matchData.topArtistsST.map((a) => `[${a.name}](${a.url})`),
-            );
-        }
+    }
+    if (matchData.topTracksLT.length) {
+        embed = embed.addField(
+            'Matched Tracks - All Time Faves',
+            matchData.topTracksLT.map(
+                (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
+            ),
+        );
+    }
+    if (matchData.topTracksMT.length) {
+        embed = embed.addField(
+            'Matched Tracks - Medium Term',
+            matchData.topTracksMT.map(
+                (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
+            ),
+        );
+    }
+    if (matchData.topTracksST.length) {
+        embed = embed.addField(
+            'Matched Tracks - Recent Listens',
+            matchData.topTracksST.map(
+                (t) => `[${t.name}](${t.url}) - _${t.artist}_`,
+            ),
+        );
+    }
+    if (matchData.topArtistsLT.length) {
+        embed = embed.addField(
+            'Artists - All Time Faves',
+            matchData.topArtistsLT.map((a) => `[${a.name}](${a.url})`),
+        );
+    }
+    if (matchData.topArtistsMT.length) {
+        embed = embed.addField(
+            'Artists - Medium Term',
+            matchData.topArtistsMT.map((a) => `[${a.name}](${a.url})`),
+        );
+    }
+    if (matchData.topArtistsST.length) {
+        embed = embed.addField(
+            'Artists - Recent Listens',
+            matchData.topArtistsST.map((a) => `[${a.name}](${a.url})`),
+        );
     }
     embed = embed
         .addField(
