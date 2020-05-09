@@ -38,7 +38,7 @@ There may be other commands, type `!mt help` to see them all after inviting the 
 
 ### Quick Start
 
-When developing, remember to change `prefix` and `shortPrefix` inconfig to something other than the live bot ones so you can run commands locally.
+When developing, remember to change `prefix` and `shortPrefix` in `config.json` to something other than the live bot ones so you can run commands locally.
 
 ```
 yarn start
@@ -62,23 +62,24 @@ These attributes are:
 
 ### Channel Manager
 
-This is kind of incorrectly named, because it's more of a Guild Manager than a Channel Manager now. It's a simple interface to provide relevant data for the current guild which the command is being called from.
+This is more of a Guild Manager than a Channel Manager to be honest. It's a simple interface to provide relevant data for the current guild which the command is being called from. This can be injected into each command as part of the Task Master,
 
 The `getTaskMaster()` method will return the correct Task Master for the guild.
 
 ### Task Master
 
-A Task Master manages all existing requests for matches and confirmation of prompt responses within a given server. A unique Task Master exists for each guild being managed by the bot, and therefore the bot is able to isolate actions to within a single guild.
+A Task Master manages all existing requests for matches and confirmation of prompt responses within a given server. A unique Task Master exists for each guild being managed by the bot.
 
 ### API Instance
 
-An API instance is created on each execution of a command linked to the user who executed the command, and therefore allows for the isolated actions to a single user, when the bot may be managing hundreds of operations simultaneously.
+An API instance is created on each execution of a command, and is linked to the user who executed the command. Therefore, an API instance which is correctly authorised with the executor's data is available to all command
+files which services injected.
 
-Both the API instance (unique to the user) and Task Master (unique to the guild) are injected into the execution context of a command if the `useServices` flag is true.
+Both the API instance (unique to the user) and Task Master (unique to the guild) are injected into the execution context of a command if the `useServices` flag is `true`.
 
 ### Cloud Functions
 
-Since the musictaste.space API is provided through Cloud Functions, in `util/cloudFunction.js` you will find a wrapper which abstracts the remote Cloud Function calls available and allows for the calling of Cloud Functions as regular async js functions.
+Since the musictaste.space API is provided through Cloud Functions, in `util/cloudFunction.js` you will find a wrapper which abstracts the remote Cloud Function calls and allows for the calling of Cloud Functions as regular async js functions. This is because `https.onCall` is currently unavailble in the Firebase Admin SDK.
 
 Construct a relevant Cloud Function by initialising like:
 
@@ -95,7 +96,7 @@ const createPlaylist = cFunction('createPlaylist')
 You can then use the `createPlaylist` function like you would any regular function using `await`.
 
 ```
-const playlistData = await createPlaylist(id, tracks)
+const playlistData = await createPlaylist({id, tracks})
 ```
 
 Feel free to reach out to me on [Twitter](https://twitter.com/_kalpal) if you have any questions.
