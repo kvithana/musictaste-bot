@@ -11,7 +11,7 @@ const SongChallengeAddConfirm = (trackData, prompt, displayName) => {
             'https://musictaste.space',
         )
         .setDescription(
-            `Are you sure you wan't to add this song as your response to today's prompt? \
+            `Are you sure you want to add this song as your response to today's prompt? \
             You can't remove a pick for today after you confirm.`,
         )
         .setThumbnail(trackData.image)
